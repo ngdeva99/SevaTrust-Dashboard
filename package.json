@@ -9,7 +9,8 @@
     "lint": "next lint",
     "types": "tsc --noEmit",
     "seed": "tsx --env-file=.env.local scripts/seed-admin.ts",
-    "import-members": "tsx --env-file=.env.local scripts/import-members-csv.ts"
+    "import-members": "tsx --env-file=.env.local scripts/import-members-csv.ts",
+    "import-v2": "tsx --env-file=.env.local scripts/import-members-v2.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.7",

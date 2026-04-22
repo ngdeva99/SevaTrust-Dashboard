@@ -205,6 +205,7 @@ export default async function MembersPage({
                   <SortHeader label="Code" field="code" sp={sp} />
                   <SortHeader label="Name" field="name" sp={sp} />
                   <SortHeader label="City" field="city" sp={sp} />
+                  <th className="p-3 font-medium">PIN</th>
                   <th className="p-3 font-medium">Phone</th>
                   <th className="p-3 font-medium">Status</th>
                   <th className="p-3 font-medium">Sub</th>

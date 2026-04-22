@@ -174,7 +174,7 @@ export function MembersTable({ rows }: { rows: Member[] }) {
   if (rows.length === 0) {
     return (
       <tr>
-        <td colSpan={7} className="p-8 text-center text-[var(--color-muted-foreground)]">
+        <td colSpan={8} className="p-8 text-center text-[var(--color-muted-foreground)]">
           No members found.
         </td>
       </tr>
@@ -195,6 +195,7 @@ export function MembersTable({ rows }: { rows: Member[] }) {
             </Link>
           </td>
           <td className="p-3">{m.city ?? "—"}</td>
+          <td className="p-3 font-mono text-xs">{m.pin_code ?? "—"}</td>
           <td className="p-3">
             <InlineEditCell
               value={m.phone ?? ""}
