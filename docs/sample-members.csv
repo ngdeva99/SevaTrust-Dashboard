@@ -1,0 +1,3 @@
+member_id,name,email,phone,join_date,membership_type,status
+M001,Sample Name,sample@example.com,+91-9999999999,2016-01-01,Life,Active
+M002,Another Name,another@example.com,+91-8888888888,2016-03-15,Life,Active

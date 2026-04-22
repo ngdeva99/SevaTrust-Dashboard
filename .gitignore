@@ -10,3 +10,9 @@ coverage/
 .turbo/
 *.tsbuildinfo
 next-env.d.ts
+
+# Sensitive documents — only sample files should be committed
+docs/*.doc
+docs/*.docx
+docs/*.csv
+!docs/sample*
