@@ -166,6 +166,77 @@ export async function updateMember(memberId: string, formData: FormData) {
   return { ok: true };
 }
 
+export async function inlineUpdateMember(
+  memberId: string,
+  field: "phone" | "status",
+  value: string
+) {
+  const admin = await requireAdmin();
+  const svc = createServiceRoleClient();
+
+  const { data: before } = await svc.from("members").select("*").eq("id", memberId).single();
+  if (!before) return { error: "Member not found" };
+
+  const updates: Record<string, unknown> = { [field]: value || null };
+
+  const { data: after, error } = await svc
+    .from("members")
+    .update(updates)
+    .eq("id", memberId)
+    .select()
+    .single();
+  if (error) return { error: error.message };
+
+  await svc.from("audit_log").insert({
+    admin_id: admin.adminId,
+    action: "inline_update_member",
+    entity_type: "member",
+    entity_id: memberId,
+    before_json: { [field]: before[field] },
+    after_json: { [field]: after[field] },
+  });
+
+  revalidatePath("/admin/members");
+  return { ok: true };
+}
+
+export async function updateSubscriptionEnd(
+  memberId: string,
+  subscriptionId: string,
+  newEndDate: string
+) {
+  const admin = await requireAdmin();
+  const svc = createServiceRoleClient();
+
+  const { data: before } = await svc
+    .from("subscriptions")
+    .select("*")
+    .eq("id", subscriptionId)
+    .eq("member_id", memberId)
+    .single();
+  if (!before) return { error: "Subscription not found" };
+
+  const { data: after, error } = await svc
+    .from("subscriptions")
+    .update({ end_date: newEndDate })
+    .eq("id", subscriptionId)
+    .select()
+    .single();
+  if (error) return { error: error.message };
+
+  await svc.from("audit_log").insert({
+    admin_id: admin.adminId,
+    action: "update_subscription_end",
+    entity_type: "subscription",
+    entity_id: subscriptionId,
+    before_json: { end_date: before.end_date },
+    after_json: { end_date: after.end_date },
+  });
+
+  revalidatePath("/admin/members");
+  return { ok: true };
+}
+
 export async function regenerateAccessToken(memberId: string) {
   const admin = await requireAdmin();
   const svc = createServiceRoleClient();

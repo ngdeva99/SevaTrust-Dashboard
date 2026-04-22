@@ -4,6 +4,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/supabase/auth";
 import { createServiceRoleClient } from "@/lib/supabase/admin";
+import { nextReceiptNumber, indianFy } from "@/lib/razorpay/payment-helpers";
 
 const PaymentSchema = z.object({
   member_id: z.string().uuid(),
@@ -19,17 +20,6 @@ const PaymentSchema = z.object({
   sub_type: z.enum(["life_member", "annual"]).optional(),
   years_paid: z.coerce.number().int().min(1).max(50).optional(),
 });
-
-function nextReceiptNumber(fy: string, count: number) {
-  return `RCT/${fy}/${String(count).padStart(5, "0")}`;
-}
-
-function indianFy(d: Date) {
-  const year = d.getFullYear();
-  const isPostMarch = d.getMonth() >= 3;
-  const y = isPostMarch ? year : year - 1;
-  return `${y}-${String((y + 1) % 100).padStart(2, "0")}`;
-}
 
 export async function recordPayment(formData: FormData) {
   const admin = await requireAdmin();

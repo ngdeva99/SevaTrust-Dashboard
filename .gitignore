@@ -16,3 +16,4 @@ docs/*.doc
 docs/*.docx
 docs/*.csv
 !docs/sample*
+.vercel
